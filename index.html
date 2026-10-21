@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rahman Tube Booster</title>
+<style>
+:root{--bg:#0f1115;--card:#181b22;--card2:#20242d;--tx:#eef0f4;--mut:#9aa3b2;--red:#ff3b3b;--ok:#27c46b;--warn:#f5a623;--bd:#2a2f3a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,Roboto,sans-serif;padding-bottom:78px}
+header{padding:12px 16px;background:linear-gradient(135deg,#ff3b3b,#b3122f);font-weight:800;font-size:18px;position:sticky;top:0;z-index:5}
+header small{display:block;font-weight:400;font-size:12px;opacity:.9}
+main{padding:12px;max-width:820px;margin:auto}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+h2{margin:0 0 8px;font-size:17px}h3{margin:14px 0 6px;font-size:15px}
+label{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 4px}
+input,select,textarea{width:100%;background:var(--card2);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:11px;font:inherit}
+textarea{min-height:80px;resize:vertical}
+.row{display:flex;gap:8px}.row>*{flex:1}
+button{background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px 14px;font:inherit;font-weight:700;cursor:pointer}
+button.sec{background:var(--card2);border:1px solid var(--bd);color:var(--tx);font-weight:600}
+button.dng{background:#3b1414;border:1px solid #7a2222;color:#ffb4b4;font-weight:600}
+button.sm{padding:7px 10px;font-size:13px}
+button:disabled{opacity:.55}
+.full{width:100%;margin-top:12px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#12151b;border-top:1px solid var(--bd);z-index:9}
+nav button{flex:1;background:none;border-radius:0;color:var(--mut);font-size:11px;padding:9px 2px;font-weight:600}
+nav button span{display:block;font-size:19px}nav button.on{color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card2);border:1px solid var(--bd);border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer}
+.vid{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--bd);text-decoration:none;color:inherit}
+.vid b{font-size:14px;display:block;line-height:1.3}
+.sub{font-size:12px;color:var(--mut)}
+.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:6px;margin:3px 4px 0 0;background:var(--card2)}
+.badge.g{background:#123d27;color:#5ff0a0}.badge.o{background:#4a3208;color:#ffc85c}.badge.r{background:#4a1515;color:#ff8a8a}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:var(--card2);border-radius:10px;padding:10px}.stat b{font-size:19px;display:block}.stat span{font-size:12px;color:var(--mut)}
+.err{background:#3b1414;border:1px solid #7a2222;color:#ffb4b4;padding:10px;border-radius:10px;margin-top:10px;font-size:13.5px;white-space:pre-wrap}
+.warn{background:#3a2a0a;border:1px solid #7a5a1a;color:#ffd78a;padding:10px;border-radius:10px;margin-top:10px;font-size:13.5px;white-space:pre-wrap}
+.hint{font-size:12.5px;color:var(--mut);margin-top:6px}
+.ttl{display:flex;gap:8px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--bd)}
+.ttl input[type=radio]{width:auto;margin-top:5px}.ttl .t{flex:1}
+.bar{height:6px;border-radius:5px;background:var(--red);min-width:2px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+.th canvas{width:100%;border-radius:10px;display:block;background:#000}
+.th.tall canvas{max-height:72vh;width:auto;max-width:100%;margin:0 auto}
+.score{width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:29px;font-weight:800;border:8px solid var(--ok);margin:auto}
+.chk{display:flex;gap:8px;padding:7px 0;border-top:1px solid var(--bd);font-size:14px}
+.rowh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
+.box{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px;white-space:pre-wrap;word-break:break-word;font-size:14px;margin:6px 0 4px}
+details{margin-top:10px}summary{cursor:pointer;font-weight:600;padding:6px 0}
+#toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#fff;color:#111;padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+.ok{color:var(--ok)}.bad{color:var(--red)}a{color:#7db7ff}
+</style>
+</head>
+<body>
+<header>Rahman Tube Booster<small>Semua pakai AI • Video biasa &amp; Shorts • v38</small></header>
+<main>
+<div class="card" style="padding:10px"><div class="row" style="align-items:center"><div style="flex:0 0 auto;font-size:13px;color:var(--mut)">Format</div>
+<select id="fmt" onchange="setFmt()"><option value="long">Video biasa (16:9)</option><option value="short">Shorts (9:16)</option></select></div></div>
+
+<!-- MULAI -->
+<section id="tab-mulai" class="on">
+ <div class="card">
+  <h2>🚀 Analisis &amp; Optimasi Video</h2>
+  <select id="mode" onchange="setMode()"><option value="link">Video sudah di-upload (tempel link)</option><option value="topic">Video belum di-upload (tulis topik)</option></select>
+  <div id="m-link"><label>Link video YouTube</label><input id="l-url" placeholder="https://youtu.be/..."></div>
+  <div id="m-topic" style="display:none"><label>Topik / ide video</label><input id="s-kw" placeholder="contoh: mod taxsee driver terbaru"></div>
+  <label>Catatan tambahan (opsional, bikin hasil lebih tepat)</label>
+  <textarea id="l-sum" style="min-height:110px" placeholder="Isi videomu dalam bentuk teks. Terisi otomatis kalau transkrip YouTube berhasil diambil, atau dari tombol Ubah suara jadi teks di bawah. Boleh juga tempel transkrip atau tulis poin yang kamu bahas."></textarea>
+  <div class="card" style="background:var(--card2);margin:10px 0 0">
+   <b>🎧 Ubah suara videomu jadi teks</b>
+   <p class="hint" style="margin-top:4px">Pilih file videomu (atau file audio) dari HP. Suaranya diubah jadi teks lebih dulu, lalu AI memahami isinya sebelum membuat SEO. Video panjang diputar 2x lebih cepat di belakang layar: <b>jangan matikan layar</b>.</p>
+   <input id="l-aud" type="file" accept="audio/*,video/*">
+   <button class="sec sm full" onclick="run(this,transcribeFile,3000000)">🎧 Ubah suara jadi teks</button>
+   <div class="sub" id="l-ast" style="margin-top:6px"></div><div id="x-err"></div>
+  </div>
+  <button class="full" onclick="run(this,analyze,360000)">🚀 Mulai Analisis</button>
+  <div class="sub" id="a-step" style="margin-top:6px"></div>
+  <div id="a-err"></div>
+ </div>
+ <div id="a-out"></div>
+</section>
+
+<!-- SKOR -->
+<section id="tab-skor">
+ <div class="card">
+  <h2>📊 Nilai &amp; Perbaiki Otomatis</h2>
+  <p class="hint" style="margin-top:0">Tempel judul, deskripsi, dan tag yang sudah ada. AI memberi skor, lalu memperbaikinya.</p>
+  <label>Kata kunci utama (boleh kosong)</label><input id="k-kw">
+  <label>Judul</label><input id="k-title">
+  <label>Deskripsi</label><textarea id="k-desc" style="min-height:130px"></textarea>
+  <label>Tag (pisah koma)</label><textarea id="k-tags"></textarea>
+  <button class="full" onclick="run(this,scoreFix,120000)">🤖 Nilai &amp; Perbaiki dengan AI</button>
+  <div id="k-err"></div>
+ </div>
+ <div id="k-out"></div>
+</section>
+
+<!-- THUMBNAIL -->
+<section id="tab-thumb">
+ <div class="card">
+  <h2>🖼️ Thumbnail AI</h2>
+  <label>Judul video / ide gambar</label><input id="t-title" placeholder="judul video atau ide gambar">
+  <label>Teks di thumbnail (kosong = AI buat teks berbeda tiap thumbnail)</label><input id="t-text" placeholder="contoh: JANGAN MASUK!">
+  <div class="chips" id="t-sug" style="margin-top:6px"></div>
+  <label>Upload foto sendiri (opsional)</label><input id="t-file" type="file" accept="image/*">
+  <div class="row"><div><label>Gaya</label><select id="t-style"><option value="auto">Kreatif otomatis</option><option value="viral">Viral / ekspresif</option><option value="horor">Horor gelap</option><option value="misteri">Misteri</option><option value="dramatis">Dramatis</option><option value="bersih">Bersih minimalis</option></select></div>
+  <div><label>Pakai teks?</label><select id="t-usetext"><option value="1">Ya</option><option value="0">Tanpa teks</option></select></div></div>
+  <button class="full" onclick="run(this,genThumbs,300000)">🎨 Buat Thumbnail (1 gambar)</button>
+  <p class="hint">Tekan lagi untuk membuat versi lain. Hasil terbaru muncul paling atas.</p>
+  <div id="t-err"></div>
+ </div>
+ <div class="grid" id="t-out"></div>
+</section>
+
+<!-- RIWAYAT -->
+<section id="tab-riwayat">
+ <div class="card">
+  <h2>📈 Riwayat Peringkat</h2>
+  <p class="hint" style="margin-top:0">Pantau posisi videomu sebelum dan sesudah SEO dipasang.</p>
+  <label>Link video</label><input id="r-url" placeholder="https://youtu.be/...">
+  <label>Kata kunci (satu per baris, maks 3)</label><textarea id="r-kws" style="min-height:64px" placeholder="mod taxsee driver"></textarea>
+  <button class="full" onclick="run(this,checkRank)">📈 Cek peringkat sekarang</button>
+  <button class="sec full" onclick="run(this,markSEO)">✅ Tandai: SEO baru sudah saya pasang</button>
+  <div class="row"><button class="dng sm full" onclick="clearHist(false)">🗑️ Bersihkan riwayat video ini</button><button class="dng sm full" onclick="clearHist(true)">🗑️ Hapus semua</button></div>
+  <p class="hint">Tiap cek memakai sekitar 100 unit kuota YouTube per kata kunci.</p>
+  <div id="r-err"></div>
+ </div>
+ <div id="r-out"></div>
+</section>
+
+<!-- SETELAN -->
+<section id="tab-setup">
+ <div class="card">
+  <h2>YouTube API Key</h2>
+  <p class="hint" style="margin-top:0">Wajib untuk riset saingan nyata. Harus berawalan AIza. Gratis: console.cloud.google.com → buat project → aktifkan YouTube Data API v3 → Credentials → Create API key.</p>
+  <input id="ytkey" type="password" placeholder="AIza..." autocomplete="off">
+  <button class="sec sm full" onclick="testYT(this)">Tes YouTube</button><div id="y-err"></div>
+ </div>
+ <div class="card">
+  <h2>Kunci AI (API Key)</h2>
+  <p class="hint" style="margin-top:0">Gratis dari aistudio.google.com → Get API key. Bisa lebih dari satu key, pisahkan dengan koma: kalau kuota satu key habis, otomatis pindah ke key berikutnya.</p>
+  <textarea id="k_gem" style="min-height:70px" placeholder="AQ.... atau AIza...,key kedua" autocomplete="off"></textarea>
+  <label>Model (kosongkan = otomatis)</label><input id="m_gem" placeholder="otomatis" autocomplete="off">
+  <button class="sec sm full" onclick="testGem(this)">Tes AI</button><div id="g-err"></div>
+ </div>
+ <button class="full" onclick="saveCfg()">Simpan Pengaturan</button>
+ <p class="hint">Key milikmu sendiri tersimpan hanya di HP/browser ini dan hanya dikirim ke YouTube dan Google. Jangan bagikan key ke siapa pun.</p>
+</section>
+</main>
+<nav id="nav">
+ <button data-t="mulai" class="on"><span>🚀</span>Mulai</button>
+ <button data-t="skor"><span>📊</span>Skor</button>
+ <button data-t="thumb"><span>🖼️</span>Thumbnail</button>
+ <button data-t="riwayat"><span>📈</span>Riwayat</button>
+ <button data-t="setup"><span>⚙️</span>Setelan</button>
+</nav>
+<div id="toast"></div>
+<script>
+/* ===== Util ===== */
+const $=id=>document.getElementById(id);
+const _fetch=window.fetch.bind(window);
+window.fetch=(u,o)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),30000);return _fetch(u,Object.assign({},o||{},{signal:c.signal})).finally(()=>clearTimeout(t))};
+const DEF={ytkey:'',k_gem:'',m_gem:''};
+const cfg=k=>{let v='';try{v=localStorage.getItem('rtb2_'+k)||''}catch(e){}v=v||DEF[k]||'';
+  if(k==='m_gem'||k==='fmt')return v.trim();
+  if(k==='k_gem')return v.replace(/["'`]/g,'').split(/[\s,;]+/).filter(Boolean).join(',');
+  return v.replace(/[\s"'`]+/g,'')};
+const setcfg=(k,v)=>{try{localStorage.setItem('rtb2_'+k,v)}catch(e){}};
+const isShort=()=>$('fmt').value==='short';
+const YEAR=new Date().getFullYear();
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),3400)}
+function fmt(n){if(n==null)return'?';if(n>=1e6)return(n/1e6).toFixed(1).replace('.0','')+' jt';if(n>=1e3)return(n/1e3).toFixed(1).replace('.0','')+' rb';return String(n)}
+function ago(d){const s=(Date.now()-new Date(d))/1000;if(s<3600)return Math.max(1,Math.round(s/60))+' mnt lalu';if(s<86400)return Math.round(s/3600)+' jam lalu';if(s<2592000)return Math.round(s/86400)+' hari lalu';if(s<31536000)return Math.round(s/2592000)+' bln lalu';return Math.round(s/31536000)+' thn lalu'}
+function durSec(iso){const m=/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/.exec(iso||'')||[];return (+m[1]||0)*3600+(+m[2]||0)*60+(+m[3]||0)}
+function durTxt(sec){const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`}
+const vpd=v=>v.views/Math.max(1,(Date.now()-new Date(v.published))/864e5);
+const med=a=>{if(!a.length)return 0;const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)]};
+const fixYear=t=>String(t).replace(/\b(20[12]\d)\b/g,y=>(+y<YEAR&&+y>=2018)?String(YEAR):y);
+const fixYearD=t=>String(t).replace(/(terbaru|update|latest|baru)(\s+)(20[12]\d)/gi,(m,a,b,y)=>a+b+((+y<YEAR)?YEAR:y));
+const yl=t=>String(t).length+(/\s/.test(t)?2:0)+1;
+function capTags(arr,max){const o=[];let l=0;for(const x of arr||[]){const t=String(x).replace(/[<>#]/g,'').trim();if(!t)continue;if(l+yl(t)>max)break;o.push(t);l+=yl(t)}return o}
+async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}toast('Tersalin ✓')}
+async function run(btn,fn,maxMs){const old=btn.textContent;btn.disabled=true;let sec=0;btn.textContent='⏳ Memproses... 0 dtk';
+  const iv=setInterval(()=>{sec++;btn.textContent='⏳ Memproses... '+sec+' dtk'},1000);
+  const eb=btn.parentElement.querySelector('[id$="-err"]');if(eb)eb.innerHTML='';
+  try{await Promise.race([fn(),new Promise((_,rj)=>setTimeout(()=>{const e=new Error('timeout');e.name='AbortError';rj(e)},maxMs||90000))])}
+  catch(e){console.error(e);const msg=(e&&e.name==='AbortError')?'Waktu habis: server tidak menjawab. Cek sinyal lalu coba lagi.':(e.message||String(e));if(eb)eb.innerHTML='<div class="err">'+esc(msg)+'</div>';else toast(msg)}
+  clearInterval(iv);btn.disabled=false;btn.textContent=old}
+function showTab(t){document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));window.scrollTo(0,0)}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+function saveCfg(){setcfg('ytkey',$('ytkey').value.trim());setcfg('k_gem',$('k_gem').value.trim());setcfg('m_gem',$('m_gem').value.trim());toast('Tersimpan ✓')}
+function setFmt(){setcfg('fmt',$('fmt').value);toast($('fmt').value==='short'?'Mode Shorts (9:16)':'Mode video biasa (16:9)')}
+function setMode(){const t=$('mode').value==='topic';$('m-link').style.display=t?'none':'';$('m-topic').style.display=t?'':'none'}
+$('ytkey').value=cfg('ytkey');$('k_gem').value=cfg('k_gem');$('m_gem').value=cfg('m_gem');$('fmt').value=cfg('fmt')==='short'?'short':'long';
+function pct(C){const t=C.reduce((a,c)=>a+c[0],0);return Math.round(C.reduce((a,c)=>a+(c[1]?c[0]:0),0)/t*100)}
+const sb=n=>`<span class="badge ${n>=80?'g':n>=55?'o':'r'}">${n}/100</span>`;
+function scoreCircle(n,l){const col=n>=80?'var(--ok)':n>=55?'var(--warn)':'var(--red)';return`<div style="text-align:center"><div class="score" style="border-color:${col}">${n==null?'–':n}</div><div class="sub" style="margin-top:6px">${l}</div></div>`}
+
+/* ===== YouTube ===== */
+async function yt(path,params){
+  const key=cfg('ytkey');if(!key){showTab('setup');throw new Error('Isi YouTube API Key dulu di tab Setelan.')}
+  const u=new URL('https://www.googleapis.com/youtube/v3/'+path);
+  Object.entries(params).forEach(([k,v])=>{if(v!==''&&v!=null)u.searchParams.set(k,v)});u.searchParams.set('key',key);
+  const r=await fetch(u.toString());const j=await r.json();
+  if(j.error)throw new Error('YouTube API: '+j.error.message);return j}
+async function testYT(btn){saveCfg();await run(btn,async()=>{await yt('videos',{part:'id',chart:'mostPopular',maxResults:1,regionCode:'ID'});toast('YouTube API Key valid ✓')})}
+function suggest(q){return new Promise(res=>{
+  const cb='ytcb'+Math.random().toString(36).slice(2);const s=document.createElement('script');
+  const done=v=>{res(v);delete window[cb];s.remove()};
+  window[cb]=d=>done((d&&d[1]||[]).map(x=>x[0]));s.onerror=()=>done([]);setTimeout(()=>done([]),6000);
+  s.src='https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&hl=id&q='+encodeURIComponent(q)+'&jsonp='+cb;document.head.appendChild(s)})}
+async function demand(seeds,must){
+  const sc={};const key=x=>String(x).toLowerCase().trim();
+  const add=(arr,w)=>arr.forEach((x,i)=>{const k=key(x);if(k)sc[k]=(sc[k]||0)+w*(12-Math.min(i,11))});
+  const base=[];seeds.filter(Boolean).forEach(sd=>{const w=String(sd).trim().split(/\s+/);[w.slice(0,2).join(' '),w.slice(0,3).join(' '),w.join(' ')].forEach(x=>{if(x)base.push(x)})});
+  const b0=[...new Set(base.map(key))];const visited=new Set(b0);
+  (await Promise.all(b0.map(q=>suggest(q)))).forEach(a=>add(a,2));
+  const next=n=>Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(e=>e[0]).filter(k=>!visited.has(k)).slice(0,n);
+  const l1=next(8);l1.forEach(k=>visited.add(k));(await Promise.all(l1.map(q=>suggest(q)))).forEach(a=>add(a,1));
+  const l2=next(8);l2.forEach(k=>visited.add(k));(await Promise.all(l2.map(q=>suggest(q)))).forEach(a=>add(a,1));
+  const mt=(must||[]).map(key).filter(Boolean);
+  return Object.entries(sc).filter(([q])=>!mt.length||mt.some(t=>q.includes(t))).sort((a,b)=>b[1]-a[1]).slice(0,20).map(([q,s])=>({q,s}))}
+
+/* ===== AI (satu-satunya AI) ===== */
+const GEM='https://generativelanguage.googleapis.com/v1beta';
+function fixStr(t){let o='',q=false,e=false;for(const ch of t){if(q){if(e){o+=ch;e=false;continue}if(ch==='\\'){o+=ch;e=true;continue}if(ch==='"'){q=false;o+=ch;continue}if(ch==='\n'){o+='\\n';continue}if(ch==='\r')continue;if(ch==='\t'){o+='\\t';continue}o+=ch}else{if(ch==='"')q=true;o+=ch}}return o}
+function parseJSON(t){if(typeof t!=='string'||!t.trim())throw new Error('AI membalas kosong');t=t.replace(/```json|```/g,'');const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<0)throw new Error('Jawaban AI bukan JSON: '+t.slice(0,80));
+  const raw=t.slice(a,b+1);const tries=[raw,fixStr(raw),fixStr(raw).replace(/,\s*([}\]])/g,'$1')];let last;
+  for(const x of tries){try{return JSON.parse(x)}catch(e){last=e}}throw new Error('Format jawaban AI rusak ('+last.message+'). Coba tekan lagi.')}
+const errMsg=j=>String((j.error&&(j.error.message||j.error))||(j.promptFeedback&&JSON.stringify(j.promptFeedback))||JSON.stringify(j)).slice(0,240);
+const isQuota=(st,m)=>st===429||/quota|exhausted|rate.?limit|too many|resource has been/i.test(m);
+async function gemPost(key,model,body,ms){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms||90000);
+  try{const r=await _fetch(GEM+'/models/'+model+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},signal:c.signal,body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}return{r,j}}
+  catch(e){return{r:{status:0},j:{error:{message:e.name==='AbortError'?'AI terlalu lama menjawab':e.message}}}}finally{clearTimeout(t)}}
+async function gemList(force,key){
+  const ck='rtb2_gm_'+key.slice(-8);
+  try{if(!force){const c=JSON.parse(localStorage.getItem(ck)||'null');if(c&&c.text&&c.text.length&&Date.now()-c.t<432e5)return c}}catch(e){}
+  const r=await _fetch(GEM+'/models?pageSize=200',{headers:{'x-goog-api-key':key}});const j=await r.json();
+  if(!j.models)throw new Error(errMsg(j));
+  const ver=n=>{const m=/gemini-(\d+(?:\.\d+)?)/.exec(n);return m?parseFloat(m[1]):0};
+  const ok=j.models.filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/',''));
+  const srt=(a,b)=>(/preview|exp/.test(a)-/preview|exp/.test(b))||ver(b)-ver(a);
+  const text=ok.filter(n=>/flash/.test(n)&&!/lite|image|tts|live|audio|embed|robotics|computer|thinking/.test(n)).sort(srt).slice(0,4);
+  const image=ok.filter(n=>/image/.test(n)&&!/tts|live/.test(n)).sort(srt).slice(0,3);
+  if(!text.length)throw new Error('Tidak ada model AI flash untuk key ini.');
+  const res={t:Date.now(),text,image};try{localStorage.setItem(ck,JSON.stringify(res))}catch(e){}return res}
+async function aiJSON(prompt,o){o=o||{};
+  const keys=cfg('k_gem').split(',').filter(Boolean);if(!keys.length){showTab('setup');throw new Error('Isi Kunci AI (API Key) di tab Setelan.')}
+  let last='',quota=false;
+  for(const key of keys){
+    let list;try{list=cfg('m_gem')?[cfg('m_gem')]:(await gemList(false,key)).text}catch(e){last=e.message;if(isQuota(0,last)){quota=true}continue}
+    let retry=0,refreshed=false,noThink=false;
+    for(let i=0;i<list.length;i++){
+      const body={contents:[{parts:[...(o.parts||[]),{text:prompt+'\n\nBalas HANYA JSON valid. Teks panjang harus satu string; pakai \\n untuk baris baru.'}]}],
+        generationConfig:{responseMimeType:'application/json',temperature:o.temp||0.7,maxOutputTokens:8192,...(noThink?{}:{thinkingConfig:{thinkingBudget:0}}),...(o.low?{mediaResolution:'MEDIA_RESOLUTION_LOW'}:{})}};
+      const {r,j}=await gemPost(key,list[i],body,o.ms);
+      const c=j.candidates&&j.candidates[0],tx=c&&c.content&&c.content.parts&&c.content.parts.map(p=>p.text||'').join('');
+      if(tx){try{return parseJSON(tx)}catch(e){last=e.message;if(retry++<1){i--}continue}}
+      const m=errMsg(j);last=m;
+      if(!noThink&&r.status===400&&/thinking|budget/i.test(m)){noThink=true;i--;continue}
+      if(isQuota(r.status,m)){quota=true;continue}
+      if((r.status===404||/not found|no longer available|deprecated/i.test(m))&&!cfg('m_gem')&&!refreshed){refreshed=true;try{list=(await gemList(true,key)).text;i=-1}catch(e){}continue}
+      if(r.status===401||r.status===403||/api key not valid|permission|suspended|denied|unauth/i.test(m))break;
+      if(r.status===503||/overloaded|high demand|unavailable/i.test(m)){await sleep(1500);continue}
+    }}
+  throw new Error(quota?'Kuota AI habis untuk semua key/model yang dicoba. Coba lagi nanti, atau tambah key dari akun Google lain di Setelan (pisahkan dengan koma).\n'+last:'AI gagal: '+last)}
+async function testGem(btn){saveCfg();await run(btn,async()=>{
+  const keys=cfg('k_gem').split(',').filter(Boolean);if(!keys.length)throw new Error('Isi Kunci AI (API Key) dulu.');
+  for(const k of keys){try{localStorage.removeItem('rtb2_gm_'+k.slice(-8))}catch(e){}}
+  const o=await aiJSON('Balas JSON {"ok":true}');const l=await gemList(false,keys[0]);
+  toast('AI berfungsi ✓ model '+l.text[0]+(l.image.length?' • gambar: '+l.image[0]:' • model gambar tidak tersedia'))})}
+async function gemImage(prompt,refB64,short){
+  const keys=cfg('k_gem').split(',').filter(Boolean);let last='';
+  for(const key of keys){let list;try{list=(await gemList(false,key)).image}catch(e){last=e.message;continue}
+    if(!list.length){last='Tidak ada model gambar AI untuk key ini.';continue}
+    for(const m of list.slice(0,1)){
+      for(const withCfg of [true,false]){
+        const body={contents:[{parts:[{text:prompt},...(refB64?[{inlineData:{mimeType:'image/jpeg',data:refB64}}]:[])]}],generationConfig:{responseModalities:['TEXT','IMAGE'],...(withCfg?{imageConfig:{aspectRatio:short?'9:16':'16:9'}}:{})}};
+        const {r,j}=await gemPost(key,m,body,90000);
+        const parts=(j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts)||[];
+        const p=parts.find(x=>(x.inlineData||x.inline_data));
+        if(p){const d=p.inlineData||p.inline_data;return 'data:'+(d.mimeType||d.mime_type||'image/png')+';base64,'+d.data}
+        last=errMsg(j);if(!(r.status===400&&withCfg))break}}}
+  throw new Error(last||'AI tidak mengembalikan gambar')}
+
+/* ===== Analisis ===== */
+let A=null;
+const step=t=>{const e=$('a-step');if(e)e.textContent=t};
+const RUBRIK='Beri skor 0-100 dengan rubrik: judul (30: panjang pas, kata kunci utama di awal, memicu rasa penasaran tapi jujur, spesifik), deskripsi (30: kata kunci di kalimat pertama, informatif, cukup panjang, 3-5 hashtag, ajakan), tag (20: relevan, 8-25 tag, memuat kata kunci, total di bawah 450 karakter), kesesuaian dengan isi video dan kata yang dicari orang (20). Bersikap ketat dan jujur. "items" berisi 6-9 poin pemeriksaan: {"name":"","ok":true,"tip":"saran singkat jika belum baik"}.';
+function vidId(s){s=(s||'').trim();const m=s.match(/(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/);if(m)return m[1];return /^[\w-]{11}$/.test(s)?s:''}
+function sampleTx(t,max){if(t.length<=max)return t;const k=Math.floor(max/3),m=Math.floor(t.length/2);return t.slice(0,k)+' […] '+t.slice(m-k/2,m+k/2)+' […] '+t.slice(-k)}
+async function getTranscript(id){
+  const T=(p,ms)=>Promise.race([p.catch(()=>''),new Promise(r=>setTimeout(()=>r(''),ms))]);
+  const p3=t=>{try{const j=JSON.parse(t);return (j.events||[]).map(e=>(e.segs||[]).map(x=>x.utf8).join('')).join(' ').replace(/\s+/g,' ').trim()}catch(e){return ''}};
+  const vtt=t=>String(t).replace(/WEBVTT[\s\S]*?\n\n/,'').replace(/[\d:.]+ --> [^\n]*\n/g,'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+  const pick=tr=>{if(!tr||!tr.length)return null;return tr.find(x=>/^id/.test(x.languageCode||x.language_code||''))||tr.find(x=>/^en/.test(x.languageCode||''))||tr[0]};
+  const viaInner=async()=>{
+    const r=await fetch('https://www.youtube.com/youtubei/v1/player?prettyPrint=false',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({context:{client:{clientName:'ANDROID',clientVersion:'20.10.38',androidSdkVersion:30,hl:'id'}},videoId:id})});
+    const j=await r.json();const t=pick(j.captions&&j.captions.playerCaptionsTracklistRenderer&&j.captions.playerCaptionsTracklistRenderer.captionTracks);if(!t)return '';
+    const x=await fetch(t.baseUrl+(t.baseUrl.includes('?')?'&':'?')+'fmt=json3');return p3(await x.text())};
+  const viaTimed=async()=>{for(const l of ['id','en']){const r=await fetch('https://www.youtube.com/api/timedtext?v='+id+'&lang='+l+'&fmt=json3');if(!r.ok)continue;const s=p3(await r.text());if(s.length>50)return s}return ''};
+  const viaInv=h=>async()=>{const r=await fetch(h+'/api/v1/captions/'+id);const j=await r.json();const t=pick(j.captions);if(!t)return '';
+    const x=await fetch(h+t.url);return vtt(await x.text())};
+  const fs=[viaInner,viaTimed,...['https://yewtu.be','https://inv.nadeko.net','https://invidious.nerdvpn.de','https://invidious.privacyredirect.com'].map(viaInv)];
+  const res=await Promise.all(fs.map(f=>T(f(),9000)));
+  const best=res.sort((x,y)=>y.length-x.length)[0]||'';return best.length>50?best.slice(0,15000):''}
+async function getComments(id){try{const j=await yt('commentThreads',{part:'snippet',videoId:id,maxResults:30,order:'relevance',textFormat:'plainText'});return j.items.map(i=>i.snippet.topLevelComment.snippet.textDisplay.replace(/\s+/g,' ').slice(0,160)).slice(0,20)}catch(e){return[]}}
+function insights(comp){
+  const top=[...comp].sort((a,b)=>b.vpd-a.vpd).slice(0,8);if(top.length<3)return[];
+  const n=top.length,c=f=>top.filter(f).length;
+  const ver=c(x=>/\d+\.\d+|v\s?\d+/i.test(x.title)),yr=c(x=>/20\d\d/.test(x.title)),nw=c(x=>/terbaru|update|baru|latest/i.test(x.title)),ft=c(x=>/fitur|auto|anti|gratis|free|no root|tanpa|full|pro|premium/i.test(x.title)),
+    sm=c(x=>x.subs!=null&&x.subs<10000),ln=Math.round(top.reduce((a,x)=>a+x.title.length,0)/n),age=med(top.map(x=>(Date.now()-new Date(x.published))/864e5)),empty=c(x=>!x.tags.length);
+  return[`${ver} dari ${n} video terlaris mencantumkan <b>nomor versi</b> di judul`,`${nw} memakai “terbaru/update” dan ${yr} mencantumkan <b>tahun</b>`,`${ft} menyebut <b>fitur/manfaat nyata</b>`,`Panjang judul rata-rata ${ln} karakter`,`${sm} dari channel kecil (di bawah 10 rb sub), jadi channel kecil bisa menang`,`Umur video terlaris sekitar ${Math.round(age)} hari`,`${empty} dari ${n} <b>tidak memakai tag</b>, jadi skor SEO bukan penentu utama`]}
+async function analyze(){
+  const topicMode=$('mode').value==='topic';const userSum=$('l-sum').value.trim();
+  let me,short=isShort(),comments=[];
+  if(!topicMode){
+    const id=vidId($('l-url').value);if(!id)throw new Error('Tempel link YouTube videomu dulu.');
+    step('1/5 Membaca videomu…');
+    const p1=await yt('videos',{part:'snippet,statistics,contentDetails',id});
+    if(!p1.items.length)throw new Error('Video tidak ditemukan atau berstatus privat.');
+    const it=p1.items[0],st=it.statistics,sec=durSec(it.contentDetails.duration);short=sec>0&&sec<=185;
+    me={id,title:it.snippet.title,desc:it.snippet.description,tags:it.snippet.tags||[],channel:it.snippet.channelTitle,channelId:it.snippet.channelId,published:it.snippet.publishedAt,views:+st.viewCount||0,likes:+st.likeCount||0,comments:+st.commentCount||0,sec};
+    const [cm,ch]=await Promise.all([getComments(id),yt('channels',{part:'statistics',id:me.channelId}).catch(()=>null)]);comments=cm;
+    me.subs=ch&&ch.items&&ch.items[0]&&!ch.items[0].statistics.hiddenSubscriberCount?+ch.items[0].statistics.subscriberCount:null;
+  }else{const t=$('s-kw').value.trim();if(!t)throw new Error('Tulis topik videonya dulu.');me={id:null,title:t,desc:'',tags:[],channel:'',topic:true,views:0,likes:0,comments:0}}
+  const meta=topicMode?`Topik/ide video (belum di-upload): ${me.title}\n`:`Judul: ${me.title}\nChannel: ${me.channel}\nDurasi: ${durTxt(me.sec)} (${short?'Shorts':'video biasa'})\nDeskripsi sekarang: ${me.desc.slice(0,1800)}\nTag sekarang: ${me.tags.join(', ')||'(kosong)'}\n`+(comments.length?`Komentar penonton:\n- ${comments.join('\n- ')}\n`:'');
+  let tx=userSum,txSrc=userSum?'catatan/transkrip darimu':'';
+  if(!tx&&!topicMode){step('2/5 Mengambil transkrip video dari YouTube…');try{tx=await getTranscript(me.id)}catch(e){}if(tx)txSrc='transkrip YouTube'}
+  const userBlock=tx?`Isi video dalam bentuk teks (transkrip/catatan, PALING TERPERCAYA): ${sampleTx(tx,9000)}\n`:'';
+  const SCHEMA='{"summary":"ringkasan apa yang dibahas, 3-4 kalimat","intent":"jenis konten, mis. tutorial instal / review / tips","audience":"target penonton","language":"bahasa","topics":["5-10 poin yang benar-benar dibahas"],"facts":["versi, nama fitur, nama aplikasi, langkah, atau detail konkret yang BENAR-BENAR ada di data"],"seed":"frasa pendek 2-3 kata yang paling umum diketik orang untuk topik ini","queries":["3 frasa pencarian nyata 2-5 kata yang diketik penonton target: 1 spesifik, 2 lebih umum berdasarkan manfaat, 3 variasi"],"must_terms":["1-3 kata yang harus ada di video saingan sejenis, mis. objek utama"],"unsure":"hal yang tidak jelas, kosongkan jika jelas"}';
+  step('2/5 AI memahami isi videomu…');
+  const u=await aiJSON(`Pahami APA YANG SEBENARNYA DIBAHAS (topik, tujuan, jenis konten), bukan hanya nama aplikasi/merek. Gunakan HANYA data berikut dan jangan mengarang apa pun yang tidak ada.\n${meta}${userBlock}\nBalas JSON: ${SCHEMA}`,{temp:0.3,ms:90000});
+  step('3/5 Mencari saingan & saran pencarian YouTube…');
+  let qs=[...(u.queries||[]),u.seed].map(x=>String(x||'').trim()).filter(Boolean);qs=[...new Set(qs)].slice(0,2);if(!qs.length)qs=[me.title];
+  const kw=qs[0],reg='ID',ranksQ={},pool=[];let total=0;
+  for(const q of qs){const sp={part:'id',q:short?q+' #shorts':q,type:'video',maxResults:50,regionCode:reg,relevanceLanguage:'id'};if(short)sp.videoDuration='short';
+    const s=await yt('search',sp);const ids=s.items.map(x=>x.id.videoId);const i=me.id?ids.indexOf(me.id):-1;ranksQ[q]=i<0?null:i+1;if(q===kw)total=ids.length;
+    ids.forEach((x,j)=>{if(x!==me.id&&!pool.some(p=>p.id===x))pool.push({id:x,rank:q===kw?j+1:null})});
+    if(q===kw)pool.forEach(p=>{if(p.rank==null){const j=ids.indexOf(p.id);if(j>=0)p.rank=j+1}})}
+  const rank=ranksQ[kw];
+  const chunk=(a,n)=>{const o=[];for(let i=0;i<a.length;i+=n)o.push(a.slice(i,i+n));return o};
+  const vids=[];for(const c of chunk(pool.map(p=>p.id),50)){const r=await yt('videos',{part:'snippet,statistics,contentDetails',id:c.join(',')});vids.push(...r.items)}
+  const subs={};for(const c of chunk([...new Set(vids.map(i=>i.snippet.channelId))],50)){const r=await yt('channels',{part:'statistics',id:c.join(',')});r.items.forEach(x=>subs[x.id]=x.statistics.hiddenSubscriberCount?null:+x.statistics.subscriberCount)}
+  const byId={};vids.forEach(i=>byId[i.id]=i);
+  const must=(u.must_terms||[]).map(x=>String(x).toLowerCase().trim()).filter(Boolean);
+  let all=pool.map(p=>{const i=byId[p.id];if(!i)return null;const hay=(i.snippet.title+' '+(i.snippet.tags||[]).join(' ')+' '+i.snippet.description.slice(0,500)).toLowerCase();
+    return{id:i.id,title:i.snippet.title,channel:i.snippet.channelTitle,subs:subs[i.snippet.channelId],views:+i.statistics.viewCount||0,published:i.snippet.publishedAt,tags:i.snippet.tags||[],desc:i.snippet.description||'',rank:p.rank,rel:!must.length||must.some(t=>hay.includes(t))}}).filter(Boolean);
+  all.sort((a,b)=>(a.rank||999)-(b.rank||999)||b.views-a.views);
+  let comp=all.filter(c=>c.rel);const excluded=all.length-comp.length;if(comp.length<3)comp=all;
+  comp.forEach(c=>c.vpd=vpd(c));
+  let dem=[];try{dem=await demand([u.seed,...qs],u.must_terms)}catch(e){}
+  const tc={};comp.forEach(c=>c.tags.forEach(t=>{const k=t.toLowerCase().trim();tc[k]=(tc[k]||0)+1}));
+  const ctags=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,25).map(x=>x[0]);
+  const INS=insights(comp);
+  step('4/5 AI menyusun judul, deskripsi, tag, dan skor…');
+  const top8=comp.slice(0,8);
+  const cur=topicMode?'':`METADATA SAAT INI (nilai ini sebagai score_before):\nJudul: ${me.title}\nDeskripsi: ${me.desc.slice(0,1500)}\nTag: ${me.tags.join(', ')}\n`;
+  const o=await aiJSON(`Kamu pakar SEO & pertumbuhan YouTube. Optimasi metadata ${short?'YouTube SHORTS':'video YouTube'} ini agar mudah ditemukan penonton TARGET di YouTube, Google, dan sosmed, serta mendapat like, komentar, share, subscribe.
+TANGGAL HARI INI: ${new Date().toISOString().slice(0,10)}. Tahun sekarang ${YEAR}; jika memakai tahun WAJIB ${YEAR}.
+ATURAN KERAS (jujur): gunakan HANYA fakta yang ada di data video. Jangan mengarang timestamp, fitur, versi, harga, link, atau klaim hasil. Timestamp hanya boleh dari deskripsi asli atau dari timeline hasil menonton video (pakai persis, mulai 00:00). Jangan memakai kata kosong ("bonus", "terbaik", "nilai tambah") kecuali nyata. Periksa ejaan.
+PEMAHAMAN ISI VIDEO: ${u.summary}\nPoin: ${(u.topics||[]).join('; ')}\nFakta terverifikasi: ${(u.facts||[]).join('; ')||'(tidak ada, jangan menyebut versi/fitur spesifik)'}\nJenis konten: ${u.intent}\nTarget penonton: ${u.audience}\nBahasa: ${u.language||'Indonesia'}\nKata kunci utama: ${kw}\nFrasa lain: ${qs.slice(1).join(', ')||'-'}
+${(u.timeline&&u.timeline.length)?'Timeline video (waktu asli):\n'+u.timeline.map(x=>x.time+' '+x.what).join('\n')+'\n':''}${userBlock}${cur}
+SARAN PENCARIAN dari autocomplete YouTube (urut dari atas):\n${dem.slice(0,20).map(d=>'- '+d.q).join('\n')||'-'}
+POLA SAINGAN SEJENIS:\n${INS.map(x=>'- '+x.replace(/<[^>]+>/g,'')).join('\n')}
+Tag terbanyak saingan: ${ctags.join(', ')}
+SAINGAN YANG HARUS KAMU SKOR JUGA (pakai rubrik yang sama):\n${top8.map((c,i)=>`[${i}] ${c.title} | tag: ${c.tags.slice(0,12).join(', ')||'(kosong)'} | deskripsi: ${c.desc.slice(0,200).replace(/\s+/g,' ')}`).join('\n')||'(tidak ada)'}
+CARA MEMAKAI: judul dan tag harus memuat frasa populer yang COCOK dengan fakta video. Frasa populer yang tidak dibahas video jangan dipakai di judul; taruh di next_ideas.
+JUDUL: buat 5 judul dengan RUMUS BERBEDA (1 kata kunci + versi/fitur nyata + terbaru/tahun, 2 manfaat utama, 3 masalah lalu solusi, 4 angka/urutan langkah, 5 rasa penasaran yang tetap jujur). ${short?'Maks 50 karakter, kata kunci di awal.':'40-70 karakter, kata kunci di awal.'} Beri skor tiap judul.
+DESKRIPSI: ${short?'60-120 kata, kata kunci di kalimat pertama, #Shorts + 2-4 hashtag di akhir.':'200-300 kata: kalimat pertama memuat kata kunci, ringkasan isi, daftar poin yang dibahas, ajakan komentar/subscribe, 3-5 hashtag di akhir.'} TAG: ${short?'12':'20-25'} tag, total di bawah 400 karakter.
+${RUBRIK}
+Balas JSON: {"score_before":${topicMode?'null':'{"total":0,"items":[]}'},"titles":[{"t":"","why":"","score":0}],"description":"","tags":[""],"hashtags":[""],"score_after":{"total":0,"items":[]},"competitor_scores":[{"i":0,"score":0}],"growth":["4-6 saran konkret menambah audiens target, like, komentar, share, subscribe"],"pinned_comment":"","cta":"kalimat ajakan yang diucapkan di video","next_ideas":["5 ide video berikutnya dari frasa populer yang belum dibahas"],"thumb_texts":["3 teks thumbnail 1-4 kata HURUF KAPITAL, jujur sesuai isi video"]}`,{temp:0.6,ms:110000});
+  const cs={};(o.competitor_scores||[]).forEach(x=>{cs[x.i]=x.score});top8.forEach((c,i)=>c.score=cs[i]);
+  const titles=(o.titles||[]).map(x=>({t:fixYear(String(x.t||'').replace(/[<>]/g,'')),why:x.why,score:+x.score||null})).filter(x=>x.t);
+  const tags=capTags((o.tags||[]).map(fixYear),400);
+  let hs=(o.hashtags||[]).map(h=>{h=String(h).trim();return h.startsWith('#')?h:'#'+h});if(short&&!hs.some(h=>h.toLowerCase()==='#shorts'))hs.unshift('#Shorts');
+  let desc=fixYearD(String(o.description||'').replace(/[<>]/g,''));if((desc.match(/#[\p{L}\p{N}_]+/gu)||[]).length<3)desc=desc.trim()+'\n\n'+hs.slice(0,5).join(' ');
+  const before=o.score_before&&o.score_before.total!=null?o.score_before:null,after=o.score_after||{total:null,items:[]};
+  let myv=0,low=0,high=0,topV=0,midV=0;
+  if(me.id){myv=vpd(me);const gain=before&&after.total!=null?Math.max(0,Math.min(60,after.total-before.total)):10;topV=med(comp.slice(0,10).map(c=>c.vpd));midV=med(comp.slice(10,25).map(c=>c.vpd));
+    low=Math.round(myv*30*(1+gain/100));high=Math.round(Math.max(low*1.3,(rank&&rank<=10?topV:(midV||topV))*30*.5))}
+  A={me,topicMode,short,kw,qs,ranksQ,rank,total:total||50,u,txSrc,noTx:!tx&&!topicMode,comp,excluded,top8,INS,dem,before,after,titles,sel:0,desc,tags,hashtags:hs,
+     ideas:o.next_ideas||[],growth:o.growth||[],pinned:o.pinned_comment||'',cta:o.cta||'',thumbTexts:o.thumb_texts||[],myv,low,high,topV,midV};
+  if(me.id){const T=getTrack();const e=T[me.id]||(T[me.id]={snaps:[]});e.title=me.title;e.snaps.push({t:Date.now(),views:me.views,likes:me.likes,comments:me.comments,title:me.title,tags:me.tags.length,ranks:ranksQ});putTrack(T);
+    $('r-url').value='https://youtu.be/'+me.id;$('r-kws').value=qs.join('\n')}
+  step('5/5 Selesai ✓');renderAnalysis()}
+function items(arr){return(arr||[]).map(c=>`<div class="chk"><span>${c.ok?'✅':'❌'}</span><div><b>${esc(c.name)}</b>${c.ok?'':`<div class="sub">${esc(c.tip||'')}</div>`}</div></div>`).join('')}
+function pickT(i){A.sel=i}
+function allText(){const t=(A.titles[A.sel]||{t:A.me.title}).t;return 'JUDUL:\n'+t+'\n\nDESKRIPSI:\n'+A.desc+'\n\nTAG:\n'+A.tags.join(', ')}
+function renderAnalysis(){
+  const a=A,me=a.me;let h='';
+  if(!a.topicMode){
+    h+=`<div class="card"><b>${esc(me.title)}</b><div class="sub">${esc(me.channel)} • ${fmt(me.views)} views • ${fmt(me.likes)} like • ${fmt(me.comments)} komentar • ${ago(me.published)}</div>
+    <div class="row" style="align-items:center;margin-top:12px">${scoreCircle(a.before?a.before.total:null,'Skor sekarang')}${scoreCircle(a.after.total,'Skor setelah optimasi')}</div>
+    <div class="stats" style="margin-top:12px"><div class="stat"><b>${a.rank?'#'+a.rank:'>'+a.total}</b><span>Peringkat untuk “${esc(a.kw)}”</span></div><div class="stat"><b>${fmt(Math.round(a.myv))}/hari</b><span>Views per hari rata-rata</span></div></div>
+    ${a.before?`<details><summary>Kenapa skor sekarang segitu?</summary>${items(a.before.items)}</details>`:''}</div>`}
+  else h+=`<div class="card"><div style="text-align:center">${scoreCircle(a.after.total,'Skor paket SEO')}</div></div>`;
+  h+=`<div class="card"><h2>✨ Hasil siap pakai</h2>
+   <h3 style="margin-top:0">Pilih judul</h3>${a.titles.map((x,i)=>`<div class="ttl"><input type="radio" name="at" ${i===a.sel?'checked':''} onchange="pickT(${i})"><span class="t"><b>${esc(x.t)}</b><br><span class="sub">${x.t.length} karakter • ${esc(x.why||'')}</span><br>${x.score!=null?sb(x.score):''}</span><button class="sec sm" onclick="copy(A.titles[${i}].t)">Salin</button></div>`).join('')}
+   <div class="rowh"><b>Deskripsi</b><button class="sec sm" onclick="copy(A.desc)">Salin deskripsi</button></div><div class="box">${esc(a.desc)}</div>
+   <div class="rowh"><b>Tag (${a.tags.reduce((n,t)=>n+yl(t),0)}/400)</b><button class="sec sm" onclick="copy(A.tags.join(', '))">Salin tag</button></div><div class="box">${esc(a.tags.join(', '))}</div>
+   <div class="rowh"><b>Hashtag</b><button class="sec sm" onclick="copy(A.hashtags.join(' '))">Salin hashtag</button></div><div class="box">${esc(a.hashtags.join(' '))}</div>
+   <p class="hint">Hashtag sudah ada di baris akhir deskripsi, jadi tidak perlu ditempel lagi di tempat lain.</p>
+   <button class="full" onclick="copy(allText())">📋 Salin judul + deskripsi + tag</button>
+   <button class="sec full" onclick="sendThumb()">🎨 Buat thumbnail dari hasil ini</button>
+   <details><summary>Alasan skor setelah optimasi</summary>${items(a.after.items)}</details></div>`;
+  h+=`<div class="card"><h3 style="margin-top:0">🧠 Yang AI pahami${a.txSrc?' (dari '+esc(a.txSrc)+')':''}</h3>
+   ${a.noTx?`<div class="warn">Isi videomu belum terbaca (transkrip YouTube tidak bisa diambil), jadi AI hanya memakai judul, deskripsi, dan komentar. Untuk hasil yang jauh lebih tepat, pakai tombol “Ubah suara jadi teks” di atas, lalu analisis ulang.</div>`:''}
+   <p style="margin:6px 0 0">${esc(a.u.summary||'-')}</p>
+   ${(a.u.topics&&a.u.topics.length)?'<div class="chips" style="margin-top:8px">'+a.u.topics.map(x=>'<span class="chip">'+esc(x)+'</span>').join('')+'</div>':''}
+   <p class="hint">Jenis: <b>${esc(a.u.intent||'-')}</b> • Target: ${esc(a.u.audience||'-')}</p>
+   ${a.u.unsure?'<div class="warn">Kurang yakin: '+esc(a.u.unsure)+'\nTulis di kolom Catatan lalu analisis ulang.</div>':''}
+</div>`;
+  if(!a.topicMode)h+=`<div class="card"><h3 style="margin-top:0">📈 Perkiraan views 30 hari</h3><div class="stats"><div class="stat"><b>${fmt(a.low)}</b><span>Konservatif</span></div><div class="stat"><b>${fmt(a.high)}</b><span>Optimis</span></div></div>
+   <p class="hint">Konservatif = views/hari sekarang × 30, naik sebanding selisih skor. Optimis = separuh views/hari saingan ${a.rank&&a.rank<=10?'10 besar':'peringkat menengah'}. Ini perkiraan kasar, <b>bukan jaminan</b>.</p></div>`;
+  h+=`<div class="card"><h3 style="margin-top:0">🥊 Saingan teratas</h3><div class="sub">Hanya yang sejenis topikmu${a.excluded?' ('+a.excluded+' video beda topik disaring)':''}. Skor oleh AI.</div>
+   ${a.comp.slice(0,10).map((c,i)=>`<a class="vid" href="https://youtu.be/${c.id}" target="_blank"><div style="flex:none;width:30px;font-weight:800">${c.rank?'#'+c.rank:'•'}</div><div><b>${esc(c.title)}</b><div class="sub">${esc(c.channel)} • ${fmt(c.subs)} sub • ${fmt(c.views)} views • ${fmt(Math.round(c.vpd))}/hari</div>${c.score!=null?sb(c.score):''}</div></a>`).join('')}
+   ${a.INS.length?`<details><summary>🔎 Kenapa saingan tetap ramai walau skor SEO-nya rendah?</summary>${a.INS.map(x=>'<div class="chk"><span>•</span><div>'+x+'</div></div>').join('')}<p class="hint">Yang paling menentukan: judul spesifik yang cocok dengan pencarian, konten baru, dan thumbnail menarik.</p></details>`:''}</div>`;
+  if(a.dem.length){const mx=a.dem[0].s;h+=`<div class="card"><details open><summary>🔎 Saran pencarian YouTube</summary><p class="hint" style="margin-top:0">Dari autocomplete YouTube. Batang panjang = lebih sering muncul di atas. Bukan jumlah pencarian pasti. Tap untuk menyalin.</p>${a.dem.slice(0,12).map(d=>`<div style="margin:6px 0;cursor:pointer" data-k="${esc(d.q)}" onclick="copy(this.dataset.k)"><div style="font-size:14px">${esc(d.q)}</div><div class="bar" style="width:${Math.max(4,d.s/mx*100)}%"></div></div>`).join('')}</details></div>`}
+  h+=`<div class="card"><details open><summary>🚀 Strategi tambah audiens</summary>${a.growth.map(g=>`<div class="chk"><span>👉</span><div>${esc(g)}</div></div>`).join('')}
+   ${a.cta?`<div class="rowh"><b>Ajakan yang diucapkan di video</b><button class="sec sm" onclick="copy(A.cta)">Salin</button></div><div class="box">${esc(a.cta)}</div>`:''}
+   ${a.pinned?`<div class="rowh"><b>Komentar pin</b><button class="sec sm" onclick="copy(A.pinned)">Salin</button></div><div class="box">${esc(a.pinned)}</div>`:''}</details>
+   ${a.ideas.length?`<details><summary>💡 Ide video berikutnya</summary>${a.ideas.map(x=>`<div class="chk"><span>🎬</span><div>${esc(x)}</div></div>`).join('')}</details>`:''}
+   <details><summary>🌐 Untuk Google &amp; sosmed</summary><button class="sec sm full" onclick="run(this,socialGen,90000)">Buat judul Google &amp; caption sosmed</button><div id="s-err"></div><div id="soc-out"></div></details></div>`;
+  $('a-out').innerHTML=h;$('a-out').scrollIntoView({behavior:'smooth'})}
+async function socialGen(){
+  const a=A,t=(a.titles[a.sel]||{t:a.me.title}).t;
+  const r=await aiJSON(`Buat teks promosi untuk video YouTube berikut. Jujur sesuai isi, jangan mengarang fitur. Tahun sekarang ${YEAR}.\nJudul: ${t}\nIsi video: ${a.u.summary}\nPoin: ${(a.u.topics||[]).join('; ')}\nBalas JSON: {"google_title":"maks 60 karakter","google_snippet":"maks 155 karakter","tiktok":"caption + hashtag","instagram":"caption + hashtag","facebook":"caption"}`,{temp:0.7,ms:80000});
+  a.soc=r;const row=(n,k,v)=>`<div class="rowh"><b>${n}</b><button class="sec sm" onclick="copy(A.soc['${k}'])">Salin</button></div><div class="box">${esc(v||'-')}</div>`;
+  $('soc-out').innerHTML=row('Judul Google','google_title',fixYear(r.google_title))+row('Snippet Google','google_snippet',r.google_snippet)+row('Caption TikTok','tiktok',r.tiktok)+row('Caption Instagram','instagram',r.instagram)+row('Caption Facebook','facebook',r.facebook)}
+function sendThumb(){const t=(A.titles[A.sel]||{t:A.me.title}).t;$('fmt').value=A.short?'short':'long';setcfg('fmt',$('fmt').value);
+  $('t-title').value=t;$('t-text').value='';THUMB_CTX=(A.u.summary||'')+' Poin: '+(A.u.topics||[]).join('; ');
+  $('t-sug').innerHTML=(A.thumbTexts||[]).map(x=>`<span class="chip" onclick="$('t-text').value=this.textContent">${esc(x)}</span>`).join('');showTab('thumb');toast('Siap. Tekan Buat 3 Thumbnail')}
+
+/* ===== Suara -> teks ===== */
+function blobB64(b){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=()=>rej(new Error('Gagal membaca audio'));r.readAsDataURL(b)})}
+async function gemTranscribe(blob,mime,fast){
+  const b64=await blobB64(blob);
+  const r=await aiJSON('Transkripsikan ucapan dalam audio ini menjadi teks, apa adanya, dalam bahasa yang diucapkan (kemungkinan bahasa Indonesia). '+(fast?'Audio diputar 2x lebih cepat dari aslinya; tetap tulis kata-katanya dengan benar. ':'')+'Abaikan musik dan noise. Jangan menambah isi. Balas JSON {"text":""}.',{parts:[{inlineData:{mimeType:mime,data:b64}}],temp:0.1,ms:120000});
+  return String(r.text||'')}
+const fmtT=x=>{x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')};
+let TX_SEG=600,TX_RATE=2,TX_DIRECT=15*1048576;
+async function recordSegments(f,st){
+  const url=URL.createObjectURL(f),v=document.createElement('video');v.src=url;v.playsInline=true;v.preload='auto';
+  await new Promise((res,rej)=>{v.onloadedmetadata=res;v.onerror=()=>rej(new Error('File ini tidak bisa diputar di browser. Coba file audio (m4a/mp3) atau tempel transkrip.'));setTimeout(()=>rej(new Error('File terlalu lama dibuka.')),25000)});
+  const dur=v.duration;if(!isFinite(dur)||dur<1){URL.revokeObjectURL(url);throw new Error('Durasi file tidak terbaca.')}
+  const AC=window.AudioContext||window.webkitAudioContext;const ctx=new AC();await ctx.resume();
+  const src=ctx.createMediaElementSource(v),dest=ctx.createMediaStreamDestination();src.connect(dest);
+  const mime=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm';
+  v.defaultPlaybackRate=TX_RATE;v.playbackRate=TX_RATE;let wake=null;try{wake=await navigator.wakeLock.request('screen')}catch(e){}
+  const parts=[];let busy=false;
+  try{await v.play();
+    for(let start=0;start<dur;start+=TX_SEG){
+      const end=Math.min(dur,start+TX_SEG),chunks=[];
+      const rec=new MediaRecorder(dest.stream,{mimeType:mime,audioBitsPerSecond:32000});rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};rec.start(1000);
+      await new Promise(res=>{const iv=setInterval(()=>{st.textContent='Mendengarkan videomu… '+fmtT(v.currentTime)+' / '+fmtT(dur)+' (kecepatan '+TX_RATE+'x). Jangan matikan layar atau pindah aplikasi.';
+        if(v.paused&&!v.ended&&!busy)v.play().catch(()=>{});if(v.currentTime>=end-0.3||v.ended){clearInterval(iv);res()}},400)});
+      await new Promise(r=>{rec.onstop=r;rec.stop()});
+      busy=true;v.pause();st.textContent='Mengubah bagian '+(parts.length+1)+' jadi teks…';
+      const blob=new Blob(chunks,{type:'audio/webm'});if(blob.size>1500)parts.push(await gemTranscribe(blob,'audio/webm',true));
+      busy=false;if(end<dur)await v.play()}
+  }finally{try{v.pause()}catch(e){}try{ctx.close()}catch(e){}URL.revokeObjectURL(url);try{wake&&wake.release()}catch(e){}}
+  return parts}
+async function transcribeFile(){
+  const f=$('l-aud').files[0];if(!f)throw new Error('Pilih file video atau audio dulu.');const st=$('l-ast');let parts=[];
+  if((f.type||'').startsWith('audio/')&&f.size<=TX_DIRECT){st.textContent='Mengubah suara jadi teks…';parts=[await gemTranscribe(f,f.type||'audio/mpeg',false)]}
+  else parts=await recordSegments(f,st);
+  const txt=parts.join(' ').replace(/\s+/g,' ').trim();if(!txt)throw new Error('Tidak ada suara yang terdeteksi di file ini.');
+  $('l-sum').value=txt;st.textContent='Selesai ✓ '+txt.length+' karakter masuk ke kolom di atas. Sekarang tekan Mulai Analisis.';toast('Teks video siap ✓')}
+
+/* ===== Skor & Perbaiki ===== */
+async function scoreFix(){
+  const kw=$('k-kw').value.trim(),ti=$('k-title').value.trim(),de=$('k-desc').value,tg=$('k-tags').value.trim(),short=isShort();
+  if(!ti)throw new Error('Isi judul dulu.');
+  const r=await aiJSON(`Kamu pakar SEO YouTube. Tanggal hari ini ${new Date().toISOString().slice(0,10)}, tahun ${YEAR} (jika memakai tahun WAJIB ${YEAR}).
+Nilai lalu perbaiki metadata ${short?'YouTube SHORTS':'video YouTube'} berikut. Jangan mengarang fakta (versi, fitur, timestamp) yang tidak ada di data; pertahankan bahasa dan isi aslinya. Kata kunci utama: ${kw||'(tentukan sendiri dari judul)'}.
+Judul: ${ti}\nDeskripsi: ${de}\nTag: ${tg}
+${RUBRIK}
+Perbaikan: judul ${short?'maks 50 karakter':'40-70 karakter'} kata kunci di awal; deskripsi ${short?'60-120 kata':'min 200 kata'} kata kunci di kalimat pertama, 3-5 hashtag di akhir${short?' (termasuk #Shorts)':''}; ${short?'12':'15-25'} tag total di bawah 400 karakter.
+Balas JSON: {"keyword":"","score_before":{"total":0,"items":[]},"title":"","description":"","tags":[""],"hashtags":[""],"score_after":{"total":0,"items":[]}}`,{temp:0.5});
+  const T=fixYear(r.title||ti),D=fixYearD(r.description||de),G=capTags((r.tags||[]).map(fixYear),400);
+  window.SF={title:T,desc:D,tags:G,kw:r.keyword||kw};
+  const b=r.score_before||{},a=r.score_after||{};
+  $('k-out').innerHTML=`<div class="card"><div class="row" style="align-items:center">${scoreCircle(b.total,'Skor sekarang')}${scoreCircle(a.total,'Setelah diperbaiki')}</div>
+   <details><summary>Kenapa skor sekarang segitu?</summary>${items(b.items)}</details></div>
+   <div class="card"><h2>Hasil perbaikan (siap salin)</h2>
+   <div class="rowh"><b>Judul</b><button class="sec sm" onclick="copy(SF.title)">Salin judul</button></div><div class="box">${esc(T)}</div>
+   <div class="rowh"><b>Deskripsi</b><button class="sec sm" onclick="copy(SF.desc)">Salin deskripsi</button></div><div class="box">${esc(D)}</div>
+   <div class="rowh"><b>Tag</b><button class="sec sm" onclick="copy(SF.tags.join(', '))">Salin tag</button></div><div class="box">${esc(G.join(', '))}</div>
+   <button class="full" onclick="copy('JUDUL:\\n'+SF.title+'\\n\\nDESKRIPSI:\\n'+SF.desc+'\\n\\nTAG:\\n'+SF.tags.join(', '))">📋 Salin semuanya</button>
+   <button class="sec full" onclick="$('t-title').value=SF.title;showTab('thumb')">🎨 Buat thumbnail</button>
+   <details><summary>Alasan skor setelah diperbaiki</summary>${items(a.items)}</details></div>`}
+
+/* ===== Riwayat ===== */
+const getTrack=()=>{try{return JSON.parse(localStorage.getItem('rtb2_track')||'{}')}catch(e){return{}}};
+const putTrack=o=>{try{localStorage.setItem('rtb2_track',JSON.stringify(o))}catch(e){toast('Gagal menyimpan riwayat')}};
+let TV=null;
+async function loadVideo(){
+  const id=vidId($('r-url').value);if(!id)throw new Error('Tempel link videomu dulu.');
+  const v=await yt('videos',{part:'snippet,statistics',id});if(!v.items.length)throw new Error('Video tidak ditemukan atau privat.');
+  const it=v.items[0],st=it.statistics;TV={id,title:it.snippet.title,channel:it.snippet.channelTitle,published:it.snippet.publishedAt,views:+st.viewCount||0,likes:+st.likeCount||0,comments:+st.commentCount||0,tags:(it.snippet.tags||[]).length,desc:it.snippet.description.length}}
+async function checkRank(){
+  await loadVideo();const kws=$('r-kws').value.split('\n').map(x=>x.trim()).filter(Boolean).slice(0,3);if(!kws.length)throw new Error('Isi minimal 1 kata kunci.');
+  const ranks={},short=isShort();
+  for(const kw of kws){const sp={part:'id',q:kw,type:'video',maxResults:50,regionCode:'ID',relevanceLanguage:'id'};if(short)sp.videoDuration='short';
+    const s=await yt('search',sp);const i=s.items.findIndex(x=>x.id.videoId===TV.id);ranks[kw]=i<0?null:i+1}
+  const T=getTrack();const e=T[TV.id]||(T[TV.id]={snaps:[]});e.title=TV.title;e.snaps.push({t:Date.now(),views:TV.views,likes:TV.likes,comments:TV.comments,title:TV.title,tags:TV.tags,ranks});putTrack(T);renderLacak()}
+async function markSEO(){await loadVideo();const T=getTrack(),e=T[TV.id];if(!e||!e.snaps.length)throw new Error('Tekan "Cek peringkat" dulu supaya ada data "sebelum".');e.markAt=Date.now();putTrack(T);renderLacak();toast('Ditandai ✓ Pasang SEO di YouTube Studio, cek lagi 2–3 hari kemudian')}
+function clearHist(all){
+  if(all){if(!confirm('Hapus SEMUA riwayat semua video?'))return;putTrack({});$('r-out').innerHTML='';toast('Semua riwayat dihapus');return}
+  const id=vidId($('r-url').value);if(!id){toast('Tempel link videonya dulu');return}if(!confirm('Hapus riwayat video ini?'))return;
+  const T=getTrack();delete T[id];putTrack(T);$('r-out').innerHTML='';toast('Riwayat video dihapus')}
+const rk=r=>r==null?'>50':'#'+r;
+function dl(a,b){if(a==null&&b==null)return'<span class="sub">tetap di luar 50 besar</span>';if(a==null)return'<span class="ok">▲ masuk 50 besar ('+rk(b)+')</span>';if(b==null)return'<span class="bad">▼ keluar dari 50 besar</span>';
+  if(b<a)return`<span class="ok">▲ naik ${a-b} (${rk(a)} → ${rk(b)})</span>`;if(b>a)return`<span class="bad">▼ turun ${b-a} (${rk(a)} → ${rk(b)})</span>`;return'<span class="sub">tetap '+rk(b)+'</span>'}
+function renderLacak(){
+  if(!TV)return;const T=getTrack(),e=T[TV.id]||{snaps:[]},S2=e.snaps;const fd=t=>new Date(t).toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  let h=`<div class="card"><b>${esc(TV.title)}</b><div class="sub">${esc(TV.channel)} • ${fmt(TV.views)} views • ${fmt(TV.likes)} like</div></div>`;
+  if(S2.length){const last=S2[S2.length-1],prev=S2[S2.length-2];
+    h+=`<div class="card"><h3 style="margin-top:0">Peringkat terakhir (${fd(last.t)})</h3>`+Object.entries(last.ranks).map(([k,r])=>`<div class="chk"><div style="flex:1"><b>${esc(k)}</b></div><div>${rk(r)}${prev&&(k in prev.ranks)?' • '+dl(prev.ranks[k],r):''}</div></div>`).join('')+`</div>`;
+    if(e.markAt){const bef=S2.filter(x=>x.t<=e.markAt).pop(),aft=S2.filter(x=>x.t>e.markAt).pop();
+      if(bef&&aft){const days=Math.max(.01,(aft.t-bef.t)/864e5);h+=`<div class="card"><h3 style="margin-top:0">Sebelum vs sesudah SEO dipasang</h3><p class="hint">Ditandai ${fd(e.markAt)} • jarak data ${days.toFixed(1)} hari</p>`+Object.keys(aft.ranks).map(k=>`<div class="chk"><div style="flex:1"><b>${esc(k)}</b></div><div>${(k in bef.ranks)?dl(bef.ranks[k],aft.ranks[k]):rk(aft.ranks[k])}</div></div>`).join('')+`<div class="chk"><div style="flex:1"><b>Tambahan views</b></div><div>+${fmt(aft.views-bef.views)} (${((aft.views-bef.views)/days).toFixed(1)}/hari)</div></div><p class="hint">Ini perbandingan sebelum dan sesudah, bukan bukti SEO penyebabnya. Makin banyak hari data, makin bisa dipercaya.</p></div>`}
+      else h+=`<div class="card"><p class="hint">SEO ditandai ${fd(e.markAt)}. Pasang di YouTube Studio, lalu cek peringkat lagi 2–3 hari kemudian.</p></div>`}
+    h+=`<div class="card"><h3 style="margin-top:0">Riwayat</h3>`+[...S2].reverse().map(x=>`<div class="chk"><div style="flex:1">${fd(x.t)}<div class="sub">${fmt(x.views)} views</div></div><div class="sub" style="text-align:right">${Object.entries(x.ranks).map(([k,r])=>esc(k)+': '+rk(r)).join('<br>')}</div></div>`).join('')+`</div>`}
+  $('r-out').innerHTML=h}
+const STY={auto:'bold cinematic look, strong contrast, vivid colors',
+ viral:'bold vibrant saturated colors, expressive subject with extreme emotion, bright contrasting background, viral youtube thumbnail style',
+ horor:'dark horror atmosphere, thick fog, eerie red and teal lighting, moody, terrifying silhouette',
+ misteri:'mysterious atmosphere, glowing light in darkness, teal and orange grading, hidden something',
+ dramatis:'cinematic dramatic lighting, high contrast, rich colors, shallow depth of field, movie poster feel',
+ bersih:'clean minimal composition, soft gradient background, one strong focal subject, negative space'};
+const PAL=['#ffd400','#ff3b3b','#00e5ff','#7cff4d','#ff7a00','#ff4fd8'];
+const LAY=['kiri','banner','atas'],ELM=['panah','lingkaran','tanda_tanya'];
+const TREAT_UP=[{zoom:1,ox:0,oy:0,filter:'contrast(1.2) saturate(1.4) brightness(1.05)'},{zoom:1.35,ox:0,oy:-.08,filter:'contrast(1.35) saturate(1.1) brightness(.85)'},{zoom:1.18,ox:.1,oy:0,filter:'contrast(1.1) saturate(1.7) brightness(1.1) hue-rotate(-10deg)'}];
+const TREAT_AI=[{zoom:1,ox:0,oy:0,filter:'contrast(1.1) saturate(1.25)'},{zoom:1,ox:0,oy:0,filter:'contrast(1.15) saturate(1.1)'},{zoom:1,ox:0,oy:0,filter:'contrast(1.05) saturate(1.35)'}];
+const LAYOUTS={
+ h:{kiri:{box:[.04,.12,.54,.76],align:'l',grad:'l'},banner:{band:[.64,.30],box:[.05,.655,.9,.24],align:'c',grad:'b'},atas:{box:[.04,.05,.92,.38],align:'c',grad:'t'}},
+ v:{kiri:{box:[.05,.58,.9,.32],align:'l',grad:'b'},banner:{band:[.66,.17],box:[.04,.665,.92,.15],align:'c',grad:'b'},atas:{box:[.05,.06,.9,.22],align:'c',grad:'t'}}};
+const EP={
+ h:{kiri:{a:[.62,.14,.74,.36],c:[.74,.5,.2],q:[.76,.5]},banner:{a:[.10,.12,.28,.34],c:[.5,.34,.22],q:[.78,.34]},atas:{a:[.14,.9,.32,.68],c:[.5,.66,.2],q:[.8,.7]}},
+ v:{kiri:{a:[.8,.12,.66,.3],c:[.5,.32,.2],q:[.5,.34]},banner:{a:[.2,.1,.36,.28],c:[.5,.4,.22],q:[.5,.42]},atas:{a:[.2,.92,.36,.74],c:[.5,.6,.2],q:[.5,.6]}}};
+function loadImg(src,cors){return new Promise((res,rej)=>{const i=new Image();if(cors!==false)i.crossOrigin='anonymous';i.onload=()=>res(i);i.onerror=()=>rej(new Error('gagal memuat gambar'));i.src=src})}
+async function genImg(prompt,seed,short){
+  const w=short?720:1280,h=short?1280:720;
+  const u=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${w}&height=${h}&nologo=true&model=flux&seed=${seed}`;
+  for(let a=0;a<2;a++){try{return await loadImg(u+(a?'&r='+a:''))}catch(e){await sleep(1500)}}
+  return loadImg(u,false)}
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+function fitText(x,words,w,h){
+  for(let s=Math.min(h,260);s>=36;s-=4){x.font=`900 ${s}px Impact,"Arial Black",sans-serif`;const lines=[];let cur='';
+    for(const wd of words){const t=cur?cur+' '+wd:wd;if(!cur||x.measureText(t).width<=w)cur=t;else{lines.push(cur);cur=wd}}
+    if(cur)lines.push(cur);
+    if(lines.length<=4&&lines.every(l=>x.measureText(l).width<=w)&&lines.length*s*1.05<=h)return{s,lines}}
+  return{s:36,lines:words}}
+function drawLines(x,F,px,py,align,acc,dark){
+  const lh=F.s*1.05;x.textBaseline='top';x.lineJoin='round';x.font=`900 ${F.s}px Impact,"Arial Black",sans-serif`;
+  F.lines.forEach((ln,i)=>{const tw=x.measureText(ln).width;const lx=align==='c'?px-tw/2:px;const ly=py+i*lh;
+    if(dark){x.lineWidth=F.s*.08;x.strokeStyle='#fff';x.strokeText(ln,lx,ly);x.fillStyle='#111';x.fillText(ln,lx,ly)}
+    else{x.lineWidth=F.s*.16;x.strokeStyle='#000';x.shadowColor='rgba(0,0,0,.65)';x.shadowBlur=F.s*.15;x.shadowOffsetY=F.s*.04;x.strokeText(ln,lx,ly);
+      x.shadowColor='transparent';x.shadowBlur=0;x.shadowOffsetY=0;x.fillStyle=(F.lines.length===1||i===F.lines.length-1)?acc:'#fff';x.fillText(ln,lx,ly)}})}
+function drawArrow(x,x1,y1,x2,y2,col,w){const a=Math.atan2(y2-y1,x2-x1),hl=w*3.2;x.save();x.strokeStyle=col;x.fillStyle=col;x.lineWidth=w;x.lineCap='round';x.shadowColor='rgba(0,0,0,.6)';x.shadowBlur=w;
+  x.beginPath();x.moveTo(x1,y1);x.lineTo(x2-Math.cos(a)*hl*.6,y2-Math.sin(a)*hl*.6);x.stroke();
+  x.beginPath();x.moveTo(x2,y2);x.lineTo(x2-hl*Math.cos(a-.45),y2-hl*Math.sin(a-.45));x.lineTo(x2-hl*Math.cos(a+.45),y2-hl*Math.sin(a+.45));x.closePath();x.fill();x.restore()}
+function drawBadge(x,txt,bx,by,s,rot){x.save();x.translate(bx,by);x.rotate(rot);x.font=`900 ${s}px Impact,"Arial Black",sans-serif`;
+  const w=x.measureText(txt).width+s*.9,h=s*1.5;x.fillStyle='#e8112d';x.strokeStyle='#fff';x.lineWidth=s*.12;rr(x,-w/2,-h/2,w,h,s*.3);x.fill();x.stroke();
+  x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.fillText(txt,0,s*.05);x.restore()}
+function compose(img,c,tr,W,H){
+  const v=H>W,K=v?'v':'h',L=LAYOUTS[K][c.layout]||LAYOUTS[K].kiri,E=(EP[K][c.layout]||EP[K].kiri);
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  if(img){const r=Math.max(W/img.width,H/img.height)*tr.zoom,w=img.width*r,h=img.height*r;
+    x.filter=tr.filter||'none';x.drawImage(img,(W-w)/2+tr.ox*W,(H-h)/2+tr.oy*H,w,h);x.filter='none'}
+  else{x.fillStyle='#0d0d14';x.fillRect(0,0,W,H);const g=x.createRadialGradient(W*.7,H*.45,0,W*.7,H*.45,Math.max(W,H)*.7);g.addColorStop(0,c.accent+'aa');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,H)}
+  const vg=x.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.55)');x.fillStyle=vg;x.fillRect(0,0,W,H);
+  const words=String(c.text||'').toUpperCase().split(/\s+/).filter(Boolean);
+  if(words.length){
+    let g=null;
+    if(L.grad==='l'){g=x.createLinearGradient(0,0,W*.65,0);g.addColorStop(0,'rgba(0,0,0,.7)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,H)}
+    else if(L.grad==='t'){g=x.createLinearGradient(0,0,0,H*.5);g.addColorStop(0,'rgba(0,0,0,.7)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,H)}
+    else{g=x.createLinearGradient(0,H*.5,0,H);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.75)');x.fillStyle=g;x.fillRect(0,0,W,H)}
+  }
+  const el=c.element;
+  if(el==='panah')drawArrow(x,E.a[0]*W,E.a[1]*H,E.a[2]*W,E.a[3]*H,'#ff2d2d',(v?W:H)*.028);
+  else if(el==='lingkaran'){x.save();x.strokeStyle='#ff2d2d';x.lineWidth=(v?W:H)*.022;x.shadowColor='rgba(0,0,0,.6)';x.shadowBlur=20;x.beginPath();x.arc(E.c[0]*W,E.c[1]*H,E.c[2]*(v?W:H),0,Math.PI*2);x.stroke();x.restore()}
+  else if(el==='tanda_tanya'){x.save();const s=v?W*1.1:H*.95;x.font=`900 ${s}px Impact,"Arial Black",sans-serif`;x.textAlign='center';x.textBaseline='middle';x.lineWidth=s*.03;x.strokeStyle='#000';x.fillStyle=c.accent;x.globalAlpha=.88;x.strokeText('?',E.q[0]*W,E.q[1]*H);x.fillText('?',E.q[0]*W,E.q[1]*H);x.restore()}
+  if(words.length){
+    if(c.layout==='banner'){
+      const bh=L.band[1]*H;x.save();x.translate(W/2,(L.band[0]+L.band[1]/2)*H);x.rotate(-.04);
+      x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=30;x.fillStyle=c.accent;x.fillRect(-W*.65,-bh/2,W*1.3,bh);x.shadowColor='transparent';x.shadowBlur=0;
+      x.fillStyle='#000';x.fillRect(-W*.65,-bh/2-6,W*1.3,6);x.fillRect(-W*.65,bh/2,W*1.3,6);
+      const F=fitText(x,words,L.box[2]*W,L.box[3]*H);drawLines(x,F,0,-(F.lines.length*F.s*1.05)/2,'c',c.accent,true);x.restore()}
+    else{
+      const bx=L.box[0]*W,by=L.box[1]*H,bw=L.box[2]*W,bh=L.box[3]*H;const F=fitText(x,words,bw,bh);const th=F.lines.length*F.s*1.05;
+      drawLines(x,F,L.align==='c'?bx+bw/2:bx,c.layout==='atas'?by:by+(bh-th)/2,L.align,c.accent,false)}
+    if(c.badge){const s=v?W*.07:H*.075;
+      const pos=v?{kiri:[.8,.07],banner:[.2,.07],atas:[.8,.9]}:{kiri:[.86,.1],banner:[.14,.1],atas:[.86,.9]};const p=pos[c.layout]||pos.kiri;
+      drawBadge(x,c.badge,p[0]*W,p[1]*H,s,.1)}
+  }
+  return cv}
+function addThumb(cv,label,short,txt){
+  const d=document.createElement('div');d.className='card th'+(short?' tall':'');d.appendChild(cv);
+  d.insertAdjacentHTML('beforeend',`<div class="sub" style="margin:8px 0">${esc(label)}</div>`);
+  const row=document.createElement('div');row.className='row';
+  const b=document.createElement('button');b.textContent='⬇️ Unduh PNG '+(short?'1080×1920':'1280×720');
+  b.onclick=()=>{try{cv.toBlob(bl=>{if(!bl){toast('Gambar tidak bisa diekspor. Tekan lama pada gambar untuk menyimpan.');return}const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='thumbnail-'+Date.now()+'.png';a.click()},'image/png')}catch(e){toast('Gagal unduh: '+e.message)}};
+  row.appendChild(b);
+  if(txt){const t=document.createElement('button');t.className='sec';t.textContent='Salin teks';t.onclick=()=>copy(txt);row.appendChild(t)}
+  d.appendChild(row);$('t-out').appendChild(d)}
+
+let THUMB_CTX='';
+let THUMB_N=0;
+async function thumbConcepts(title,style,short,hasImage){
+  const userText=$('t-text').value.trim();let c0=null,err='';const k=THUMB_N++;
+  try{const r=await aiJSON(`Kamu art director thumbnail YouTube ${short?'Shorts (cover vertikal 9:16)':'(16:9)'} yang ahli membuat orang PENASARAN dan ingin mengklik.
+Judul/ide video: "${title}"
+Isi video sebenarnya (WAJIB sesuai ini, jangan mengarang): ${THUMB_CTX||'-'}
+Gaya: ${style==='auto'?'bebas, pilih yang paling menarik':style}
+Buat 1 konsep thumbnail${k?' yang BERBEDA dari versi sebelumnya (versi ke-'+(k+1)+')':''}:
+- scene: deskripsi gambar dalam bahasa Inggris (maks 40 kata), satu adegan jelas dengan subjek utama dan emosi/misteri kuat, TANPA teks, huruf, atau logo di gambar.${hasImage?' (foto sudah diupload; deskripsikan cara mengolahnya menjadi latar thumbnail yang dramatis)':''}
+- text: 1-4 kata HURUF KAPITAL, bahasa sama dengan judul, memicu rasa penasaran (jujur, sesuai isi video).
+- badge: label kecil maks 10 karakter seperti "TERBONGKAR", "REAL!", "PART 2", atau "".
+- accent: warna hex terang (#RRGGBB).
+Balas JSON: {"scene":"","text":"","badge":"","accent":"#ffd400"}`,{temp:0.95,ms:60000});c0=r.concepts?r.concepts[0]:r}catch(e){err=e.message}
+  const c=c0||{};
+  const out={scene:String(c.scene||title+', dramatic close-up, glowing light, dark background'),text:String(c.text||'JANGAN DITONTON!').toUpperCase().slice(0,32),badge:String(c.badge||'').toUpperCase().slice(0,12),
+    accent:/^#[0-9a-f]{6}$/i.test(c.accent||'')?c.accent:PAL[(k*2)%PAL.length],layout:LAY[k%3],element:ELM[k%3]};
+  if(userText)out.text=userText.toUpperCase();return{out,err}}
+async function fileB64(file){const im=await loadImg(URL.createObjectURL(file),false);const r=Math.min(1,1024/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*r);c.height=Math.round(im.height*r);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return{img:im,b64:c.toDataURL('image/jpeg',.85).split(',')[1]}}
+async function genThumbs(){
+  const short=isShort(),W=short?1080:1280,H=short?1920:720;
+  const title=$('t-title').value.trim(),style=$('t-style').value,file=$('t-file').files[0];
+  if(!title&&!file)throw new Error('Isi judul/ide gambar, atau upload foto.');
+  const useText=$('t-usetext').value==='1';
+  const {out:c,err}=await thumbConcepts(title||'video',style,short,!!file);
+  let warn=err?'Konsep dari AI gagal ('+String(err).slice(0,120)+'). Memakai konsep standar.\n':'';
+  let up=null;if(file)up=await fileB64(file);
+  const tr=file?TREAT_UP[(THUMB_N-1)%3]:TREAT_AI[(THUMB_N-1)%3];let img=null,src='';
+  toast('Membuat gambar…');
+  const base=`${c.scene}. ${STY[style]||STY.auto}. ${short?'Vertical 9:16':'Wide 16:9'} YouTube thumbnail background, ultra detailed, sharp focus, high contrast, cinematic lighting. Absolutely no text, letters, numbers, or logos in the image.`;
+  try{const u=await gemImage(file?('Transform this photo into a bold, dramatic YouTube thumbnail background. Keep the main subject and composition recognizable, but improve lighting, contrast, and mood. Concept: '+base):base,file?up.b64:null,short);img=await loadImg(u,false);src='AI'}
+  catch(e){warn+='Gambar AI tidak tersedia ('+String(e.message).slice(0,120)+'). Memakai cadangan.\n'}
+  if(!img&&file){img=up.img;src='fotomu'}
+  if(!img){try{img=await genImg(base,Math.floor(Math.random()*1e6),short);src='cadangan Pollinations'}catch(e){img=null;src='latar warna'}}
+  const cc=Object.assign({},c,{text:useText?c.text:'',badge:useText?c.badge:''});
+  addThumb(compose(img,cc,src==='AI'?{zoom:1,ox:0,oy:0,filter:'none'}:tr,W,H),`${c.layout} • ${c.element} • gambar: ${src}`,short,c.text);
+  const o=$('t-out');o.prepend(o.lastChild);
+  $('t-err').innerHTML=warn?'<div class="warn">'+esc(warn.trim())+'</div>':'';o.scrollIntoView({behavior:'smooth'})}
+async function testGemDummy(){}
+</script>
+</body>
+</html>
