@@ -56,7 +56,7 @@ details{margin-top:10px}summary{cursor:pointer;font-weight:600;padding:6px 0}
 </style>
 </head>
 <body>
-<header>Rahman Tube Booster<small>Semua pakai AI • Video biasa &amp; Shorts • v38</small></header>
+<header>Rahman Tube Booster<small>Semua pakai AI • Video biasa &amp; Shorts • v39</small></header>
 <main>
 <div class="card" style="padding:10px"><div class="row" style="align-items:center"><div style="flex:0 0 auto;font-size:13px;color:var(--mut)">Format</div>
 <select id="fmt" onchange="setFmt()"><option value="long">Video biasa (16:9)</option><option value="short">Shorts (9:16)</option></select></div></div>
@@ -388,11 +388,16 @@ Balas JSON: {"score_before":${topicMode?'null':'{"total":0,"items":[]}'},"titles
     low=Math.round(myv*30*(1+gain/100));high=Math.round(Math.max(low*1.3,(rank&&rank<=10?topV:(midV||topV))*30*.5))}
   A={me,topicMode,short,kw,qs,ranksQ,rank,total:total||50,u,txSrc,noTx:!tx&&!topicMode,comp,excluded,top8,INS,dem,before,after,titles,sel:0,desc,tags,hashtags:hs,
      ideas:o.next_ideas||[],growth:o.growth||[],pinned:o.pinned_comment||'',cta:o.cta||'',thumbTexts:o.thumb_texts||[],myv,low,high,topV,midV};
+  pushScore();
   if(me.id){const T=getTrack();const e=T[me.id]||(T[me.id]={snaps:[]});e.title=me.title;e.snaps.push({t:Date.now(),views:me.views,likes:me.likes,comments:me.comments,title:me.title,tags:me.tags.length,ranks:ranksQ});putTrack(T);
     $('r-url').value='https://youtu.be/'+me.id;$('r-kws').value=qs.join('\n')}
   step('5/5 Selesai ✓');renderAnalysis()}
 function items(arr){return(arr||[]).map(c=>`<div class="chk"><span>${c.ok?'✅':'❌'}</span><div><b>${esc(c.name)}</b>${c.ok?'':`<div class="sub">${esc(c.tip||'')}</div>`}</div></div>`).join('')}
-function pickT(i){A.sel=i}
+function pickT(i){A.sel=i;pushScore()}
+function pushScore(){try{const a=A,t=(a.titles[a.sel]||{t:a.me.title}).t;
+  $('k-kw').value=a.kw||'';$('k-title').value=a.me.title||'';$('k-desc').value=a.me.desc||'';$('k-tags').value=(a.me.tags||[]).join(', ');
+  window.SF={title:t,desc:a.desc,tags:a.tags,kw:a.kw||''};
+  renderScore(a.before||{total:null,items:[]},a.after||{total:null,items:[]},t,a.desc,a.tags,'✓ Hasil dari tab Mulai sudah masuk di sini otomatis: kolom di atas berisi data videomu yang lama, hasil di bawah sudah dinilai dan diperbaiki AI.')}catch(e){}}
 function allText(){const t=(A.titles[A.sel]||{t:A.me.title}).t;return 'JUDUL:\n'+t+'\n\nDESKRIPSI:\n'+A.desc+'\n\nTAG:\n'+A.tags.join(', ')}
 function renderAnalysis(){
   const a=A,me=a.me;let h='';
@@ -487,8 +492,10 @@ Perbaikan: judul ${short?'maks 50 karakter':'40-70 karakter'} kata kunci di awal
 Balas JSON: {"keyword":"","score_before":{"total":0,"items":[]},"title":"","description":"","tags":[""],"hashtags":[""],"score_after":{"total":0,"items":[]}}`,{temp:0.5});
   const T=fixYear(r.title||ti),D=fixYearD(r.description||de),G=capTags((r.tags||[]).map(fixYear),400);
   window.SF={title:T,desc:D,tags:G,kw:r.keyword||kw};
-  const b=r.score_before||{},a=r.score_after||{};
-  $('k-out').innerHTML=`<div class="card"><div class="row" style="align-items:center">${scoreCircle(b.total,'Skor sekarang')}${scoreCircle(a.total,'Setelah diperbaiki')}</div>
+  renderScore(r.score_before||{},r.score_after||{},T,D,G)}
+function renderScore(b,a,T,D,G,note){
+  window.SF=Object.assign(window.SF||{},{title:T,desc:D,tags:G});
+  $('k-out').innerHTML=(note?`<div class="ok" style="margin-bottom:10px">${note}</div>`:'')+`<div class="card"><div class="row" style="align-items:center">${scoreCircle(b.total,'Skor sekarang')}${scoreCircle(a.total,'Setelah diperbaiki')}</div>
    <details><summary>Kenapa skor sekarang segitu?</summary>${items(b.items)}</details></div>
    <div class="card"><h2>Hasil perbaikan (siap salin)</h2>
    <div class="rowh"><b>Judul</b><button class="sec sm" onclick="copy(SF.title)">Salin judul</button></div><div class="box">${esc(T)}</div>
